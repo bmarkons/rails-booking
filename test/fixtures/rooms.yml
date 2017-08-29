@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: 1
+  beds: 1
+  description: MyText
+  price: 1.5
+  accommodation: one
+
+two:
+  number: 1
+  beds: 1
+  description: MyText
+  price: 1.5
+  accommodation: two

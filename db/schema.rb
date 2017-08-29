@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170829145730) do
+ActiveRecord::Schema.define(version: 20170829150026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,26 @@ ActiveRecord::Schema.define(version: 20170829145730) do
     t.index ["country_id"], name: "index_regions_on_country_id"
   end
 
+  create_table "room_reservations", force: :cascade do |t|
+    t.datetime "start"
+    t.datetime "end"
+    t.bigint "room_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_room_reservations_on_room_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.integer "number"
+    t.integer "beds"
+    t.text "description"
+    t.float "price"
+    t.bigint "accommodation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accommodation_id"], name: "index_rooms_on_accommodation_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -89,4 +109,6 @@ ActiveRecord::Schema.define(version: 20170829145730) do
   add_foreign_key "accommodations", "users"
   add_foreign_key "places", "regions"
   add_foreign_key "regions", "countries"
+  add_foreign_key "room_reservations", "rooms"
+  add_foreign_key "rooms", "accommodations"
 end
