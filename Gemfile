@@ -9,6 +9,7 @@ gem 'rails', '~> 5.1.3'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
 gem 'devise_token_auth'
+gem 'omniauth'
 # gem 'jbuilder', '~> 2.5'
 
 gem 'rack-cors'
