@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  average_grade: 1.5
+  text: MyText
+  user: one
+  accommodation: one
+
+two:
+  average_grade: 1.5
+  text: MyText
+  user: two
+  accommodation: two
