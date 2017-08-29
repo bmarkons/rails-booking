@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :accommodation_types
   resources :places
   resources :regions
   resources :countries
