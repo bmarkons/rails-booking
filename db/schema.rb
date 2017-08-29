@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170829143209) do
+ActiveRecord::Schema.define(version: 20170829145730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,21 @@ ActiveRecord::Schema.define(version: 20170829143209) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "accommodations", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "address"
+    t.float "average_grade"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "image_url"
+    t.boolean "approved"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_accommodations_on_user_id"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -71,6 +86,7 @@ ActiveRecord::Schema.define(version: 20170829143209) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "accommodations", "users"
   add_foreign_key "places", "regions"
   add_foreign_key "regions", "countries"
 end
