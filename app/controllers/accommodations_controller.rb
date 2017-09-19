@@ -1,5 +1,5 @@
 class AccommodationsController < ApplicationController
-  before_action :set_accommodation, only: [:show, :update, :destroy]
+  before_action :set_accommodation, only: [:show, :update, :destroy, :approve]
   before_action :authenticate_user!
 
   # GET /accommodations
@@ -37,6 +37,15 @@ class AccommodationsController < ApplicationController
   # DELETE /accommodations/1
   def destroy
     @accommodation.destroy
+  end
+
+  def approve
+    if current_user.role == "admin"
+      @accommodation.update!(approved: true)
+      render json: @accommodation
+    else
+      render status: :unauthorized
+    end
   end
 
   private
