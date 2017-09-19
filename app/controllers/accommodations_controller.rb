@@ -16,12 +16,16 @@ class AccommodationsController < ApplicationController
 
   # POST /accommodations
   def create
-    @accommodation = current_user.accommodations.build(accommodation_params)
+    unless current_user.role != "manager" || current_user.blocked
+      @accommodation = current_user.accommodations.build(accommodation_params)
 
-    if @accommodation.save
-      render json: @accommodation, status: :created, location: @accommodation
+      if @accommodation.save
+        render json: @accommodation, status: :created, location: @accommodation
+      else
+        render json: @accommodation.errors, status: :unprocessable_entity
+      end
     else
-      render json: @accommodation.errors, status: :unprocessable_entity
+      render json: 'Admin blocked you.', status: :unauthorized
     end
   end
 
@@ -49,13 +53,13 @@ class AccommodationsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_accommodation
-      @accommodation = Accommodation.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_accommodation
+    @accommodation = Accommodation.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def accommodation_params
-      params.require(:accommodation).permit(:name, :description, :address, :average_grade, :latitude, :longitude, :image_url, :approved, :accommodation_type_id, :place_id)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def accommodation_params
+    params.require(:accommodation).permit(:name, :description, :address, :average_grade, :latitude, :longitude, :image_url, :approved, :accommodation_type_id, :place_id)
+  end
 end
