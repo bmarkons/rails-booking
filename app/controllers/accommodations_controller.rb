@@ -15,7 +15,7 @@ class AccommodationsController < ApplicationController
 
   # POST /accommodations
   def create
-    @accommodation = Accommodation.new(accommodation_params)
+    @accommodation = current_user.accommodations.build(accommodation_params)
 
     if @accommodation.save
       render json: @accommodation, status: :created, location: @accommodation
@@ -46,6 +46,6 @@ class AccommodationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def accommodation_params
-      params.require(:accommodation).permit(:name, :description, :address, :average_grade, :latitude, :longitude, :image_url, :approved, :user_id)
+      params.require(:accommodation).permit(:name, :description, :address, :average_grade, :latitude, :longitude, :image_url, :approved, :accommodation_type, :place)
     end
 end

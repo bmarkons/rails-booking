@@ -1,4 +1,5 @@
 class AccommodationTypesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_accommodation_type, only: [:show, :update, :destroy]
 
   # GET /accommodation_types
