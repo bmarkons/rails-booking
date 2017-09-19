@@ -1,5 +1,6 @@
 class RoomReservationsController < ApplicationController
   before_action :set_room_reservation, only: [:show, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /room_reservations
   def index
