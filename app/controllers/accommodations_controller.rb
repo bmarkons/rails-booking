@@ -46,6 +46,6 @@ class AccommodationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def accommodation_params
-      params.require(:accommodation).permit(:name, :description, :address, :average_grade, :latitude, :longitude, :image_url, :approved, :accommodation_type, :place)
+      params.require(:accommodation).permit(:name, :description, :address, :average_grade, :latitude, :longitude, :image_url, :approved, :accommodation_type_id, :place_id)
     end
 end
