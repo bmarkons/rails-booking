@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   resources :places
   resources :regions
   resources :countries
+  get "users", to: "users#index", as: "managers"
+  post "toggle_block/:id", to: "users#toggle_block"
 end
