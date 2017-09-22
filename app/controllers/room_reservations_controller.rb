@@ -16,7 +16,7 @@ class RoomReservationsController < ApplicationController
 
   # POST /room_reservations
   def create
-    @room_reservation = RoomReservation.new(room_reservation_params)
+    @room_reservation = current_user.room_reservations.build(room_reservation_params)
 
     if @room_reservation.save
       render json: @room_reservation, status: :created, location: @room_reservation

@@ -4,8 +4,8 @@ class RoomsController < ApplicationController
 
   # GET /rooms
   def index
-    @rooms = Room.all
-
+    @rooms = Accommodation.find(params["accommodation_id"].to_i).rooms
+    
     render json: @rooms
   end
 
