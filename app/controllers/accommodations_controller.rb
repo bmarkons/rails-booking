@@ -4,7 +4,14 @@ class AccommodationsController < ApplicationController
 
   # GET /accommodations
   def index
-    @accommodations = Accommodation.all
+    @accommodations = 
+      if current_user.role == "admin"
+        Accommodation.all
+      elsif current_user.role == "manager"
+        Accommodation.managed_by(current_user)
+      else
+        Accommodation.approved
+      end
 
     render json: @accommodations
   end
