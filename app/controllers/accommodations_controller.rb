@@ -4,7 +4,7 @@ class AccommodationsController < ApplicationController
 
   # GET /accommodations
   def index
-    @accommodations = 
+    @accommodations =
       if current_user.role == "admin"
         Accommodation.all
       elsif current_user.role == "manager"
@@ -13,7 +13,7 @@ class AccommodationsController < ApplicationController
         Accommodation.approved
       end
 
-    render json: @accommodations
+    render json: @accommodations, include: [:place, :accommodation_type, :user]
   end
 
   # GET /accommodations/1
@@ -38,10 +38,14 @@ class AccommodationsController < ApplicationController
 
   # PATCH/PUT /accommodations/1
   def update
-    if @accommodation.update(accommodation_params)
-      render json: @accommodation
+    if current_user.id == @accommodation.user.id
+      if @accommodation.update(accommodation_params)
+        render json: @accommodation
+      else
+        render json: @accommodation.errors, status: :unprocessable_entity
+      end
     else
-      render json: @accommodation.errors, status: :unprocessable_entity
+      render status: :unauthorized
     end
   end
 
@@ -53,7 +57,7 @@ class AccommodationsController < ApplicationController
   def approve
     if current_user.role == "admin"
       @accommodation.update!(approved: true)
-      render json: @accommodation
+      render json: @accommodation, include: [:place, :accommodation_type, :user]
     else
       render status: :unauthorized
     end
@@ -67,6 +71,6 @@ class AccommodationsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def accommodation_params
-    params.require(:accommodation).permit(:name, :description, :address, :average_grade, :latitude, :longitude, :image_url, :approved, :accommodation_type_id, :place_id)
+    params.require(:accommodation).permit(:name, :description, :address, :average_grade, :latitude, :longitude, :image_url, :accommodation_type_id, :place_id)
   end
 end
