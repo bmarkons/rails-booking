@@ -5,7 +5,7 @@ class RoomsController < ApplicationController
   # GET /rooms
   def index
     @rooms = Accommodation.find(params["accommodation_id"].to_i).rooms
-    
+
     render json: @rooms
   end
 
@@ -16,37 +16,50 @@ class RoomsController < ApplicationController
 
   # POST /rooms
   def create
-    @room = Room.new(room_params)
+    if Accommodation.find(room_params["accommodation_id"]).user.id == current_user.id
+      @room = Room.new(room_params)
 
-    if @room.save
-      render json: @room, status: :created, location: @room
+      if @room.save
+        render json: @room, status: :created, location: @room
+      else
+        render json: @room.errors, status: :unprocessable_entity
+      end
     else
-      render json: @room.errors, status: :unprocessable_entity
+      render status: :unauthorized
     end
   end
 
   # PATCH/PUT /rooms/1
   def update
-    if @room.update(room_params)
-      render json: @room
+    if @room.accommodation.user.id == current_user.id
+      if @room.update(room_params)
+        render json: @room
+      else
+        render json: @room.errors, status: :unprocessable_entity
+      end
     else
-      render json: @room.errors, status: :unprocessable_entity
+      render status: :unauthorized
     end
   end
 
   # DELETE /rooms/1
   def destroy
-    @room.destroy
+    if @room.accommodation.user.id == current_user.id
+      @room.destroy
+      render json: @room, status: :ok
+    else
+      render status: :unauthorized
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_room
-      @room = Room.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_room
+    @room = Room.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def room_params
-      params.require(:room).permit(:number, :beds, :description, :price, :accommodation_id)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def room_params
+    params.require(:room).permit(:number, :beds, :description, :price, :accommodation_id)
+  end
 end
