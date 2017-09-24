@@ -51,7 +51,10 @@ class AccommodationsController < ApplicationController
 
   # DELETE /accommodations/1
   def destroy
-    @accommodation.destroy
+    if current_user.id == @accommodation.user.id
+      @accommodation.destroy
+      render json: @accommodation, status: :ok
+    end
   end
 
   def approve
